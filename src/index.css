@@ -100,12 +100,15 @@ h1, h2, h3, h4, h5 {
   margin: 16px 0 8px;
 }
 
-.sidebar-nav a {
+.sidebar-nav button {
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;
   padding: 11px 24px;
   color: rgba(255,255,255,0.6);
+  background: transparent;
+  border: 0;
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
@@ -113,19 +116,21 @@ h1, h2, h3, h4, h5 {
   border-radius: 0;
   transition: all 0.2s;
   position: relative;
+  cursor: pointer;
+  text-align: left;
 }
 
-.sidebar-nav a:hover {
+.sidebar-nav button:hover {
   color: white;
   background: rgba(255,255,255,0.06);
 }
 
-.sidebar-nav a.active {
+.sidebar-nav button.active {
   color: white;
   background: rgba(79,195,247,0.15);
 }
 
-.sidebar-nav a.active::before {
+.sidebar-nav button.active::before {
   content: '';
   position: absolute;
   left: 0; top: 6px; bottom: 6px;
@@ -134,7 +139,7 @@ h1, h2, h3, h4, h5 {
   border-radius: 0 4px 4px 0;
 }
 
-.sidebar-nav a .nav-icon {
+.sidebar-nav button .nav-icon {
   width: 32px; height: 32px;
   border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
@@ -143,12 +148,12 @@ h1, h2, h3, h4, h5 {
   transition: all 0.2s;
 }
 
-.sidebar-nav a.active .nav-icon {
+.sidebar-nav button.active .nav-icon {
   background: linear-gradient(135deg, var(--sky), var(--mint));
   box-shadow: 0 4px 12px rgba(79,195,247,0.4);
 }
 
-.sidebar-nav a .nav-badge {
+.sidebar-nav button .nav-badge {
   margin-left: auto;
   background: var(--coral);
   color: white;

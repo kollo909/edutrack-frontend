@@ -7,7 +7,7 @@ import Students from './pages/Students';
 import Analytics from './pages/Analytics';
 import QRScanner from './pages/QRScanner';
 import Notifications from './pages/Notifications';
-import { clearToken, getToken } from './api';
+import { clearToken } from './api';
 
 type Role = 'admin' | 'principal' | 'scanner';
 type Page = 'dashboard' | 'students' | 'analytics' | 'scanner' | 'notifications';
@@ -87,16 +87,16 @@ export default function App() {
 
         <nav className="sidebar-nav">
           {visibleNav.map(item => (
-            <a
+            <button
               key={item.page}
-              href="#"
+              type="button"
               className={page === item.page ? 'active' : ''}
-              onClick={e => { e.preventDefault(); setPage(item.page); }}
+              onClick={() => setPage(item.page)}
             >
               <div className="nav-icon">{item.icon}</div>
               {item.label}
               {item.badge ? <span className="nav-badge">{item.badge}</span> : null}
-            </a>
+            </button>
           ))}
         </nav>
 
