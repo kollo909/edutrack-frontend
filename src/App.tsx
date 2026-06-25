@@ -114,16 +114,31 @@ export default function App() {
 
         <nav className="sidebar-nav">
           {visibleNav.map(item => (
-            <a
+            <button
               key={item.page}
-              href="#"
-              className={page === item.page ? 'active' : ''}
-              onClick={e => { e.preventDefault(); setPage(item.page); }}
+              className={`nav-btn ${page === item.page ? 'active' : ''}`}
+              onClick={() => setPage(item.page)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                width: '100%',
+                background: 'none',
+                border: 'none',
+                textAlign: 'left',
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                fontSize: 'inherit',
+                color: 'inherit',
+                padding: '10px 14px',
+                borderRadius: '8px',
+                marginBottom: '4px',
+                textDecoration: 'none'
+              }}
             >
-              <div className="nav-icon">{item.icon}</div>
-              {item.label}
+              <div className="nav-icon" style={{ marginRight: '12px' }}>{item.icon}</div>
+              <span style={{ flex: 1 }}>{item.label}</span>
               {item.badge ? <span className="nav-badge">{item.badge}</span> : null}
-            </a>
+            </button>
           ))}
         </nav>
 
@@ -136,59 +151,3 @@ export default function App() {
               <h4>{fullName || ROLE_LABELS[role]}</h4>
               <span>{ROLE_LABELS[role]}</span>
             </div>
-          </div>
-          <button
-            onClick={handleLogout}
-            style={{
-              marginTop: 10, width: '100%', padding: '9px 0',
-              background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: 10, color: 'rgba(255,255,255,0.5)', cursor: 'pointer',
-              fontSize: 12, fontWeight: 700, fontFamily: 'Nunito', letterSpacing: 0.5,
-            }}
-          >
-            ← Sign Out
-          </button>
-        </div>
-      </aside>
-
-      {/* ── Main Content ── */}
-      <main className="main-content">
-        {/* Topbar */}
-        <header className="topbar">
-          <div className="topbar-left">
-            <h1>{title}</h1>
-            <p>{subtitle}</p>
-          </div>
-          <div className="topbar-right">
-            <div className="topbar-search">
-              <span>🔍</span>
-              <input placeholder="Search…" />
-            </div>
-            <button
-              className="topbar-btn"
-              onClick={() => setPage('notifications')}
-              title="Notifications"
-            >
-              🔔
-              <span className="notif-dot" />
-            </button>
-            <button
-              className="topbar-btn"
-              onClick={handleLogout}
-              title="Sign out"
-            >
-              👤
-            </button>
-          </div>
-        </header>
-
-        {/* Page content */}
-        {page === 'dashboard'     && <Dashboard />}
-        {page === 'scanner'       && <QRScanner />}
-        {page === 'students'      && <Students />}
-        {page === 'analytics'     && <Analytics />}
-        {page === 'notifications' && <Notifications />}
-      </main>
-    </div>
-  );
-}
