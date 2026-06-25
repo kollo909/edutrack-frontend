@@ -87,7 +87,7 @@ export default function Dashboard() {
           { color: 'sky',    icon: '👥', val: summary ? summary.totalStudents.toLocaleString() : '—', label: 'Total Students',    dir: 'up' as const },
           { color: 'mint',   icon: '✅', val: summary ? `${summary.attendancePct}%`            : '—', label: "Today's Attendance", dir: 'up' as const },
           { color: 'yellow', icon: '⏰', val: summary ? String(summary.lateToday)               : '—', label: 'Students Late',      dir: 'up' as const },
-          { color: 'coral',  icon: '❌', val: summary ? String(summary.absentToday)             : '—', label: 'Absent Today',       dir: 'down' as const },
+          { color: 'coral',  icon: '❌', val: summary ? String(summary.absentToday)             : '—', label: 'Absent Today',        dir: 'down' as const },
         ].map((s, i) => (
           <div key={i} className={`stat-card ${s.color}`}>
             <div className="stat-card-accent" />
@@ -134,7 +134,8 @@ export default function Dashboard() {
           <Doughnut data={doughnutData} options={{
             responsive: true, cutout: '72%',
             plugins: {
-              legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true, font: { family: 'Nunito', weight: '700' } } }
+              // Fixed font weight property value to be an absolute number instead of string representation
+              legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true, font: { family: 'Nunito', weight: 700 } } }
             }
           }} />
         </div>
