@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
@@ -41,16 +41,38 @@ const ROLE_LABELS: Record<Role, string> = {
 };
 
 export default function App() {
-  const [view, setView]       = useState<'landing' | 'login' | 'app'>('landing');
-  const [role, setRole]       = useState<Role>('admin');
+  const [view, setView]         = useState<'landing' | 'login' | 'app'>('landing');
+  const [role, setRole]         = useState<Role>('admin');
   const [fullName, setFullName] = useState('');
-  const [page, setPage]       = useState<Page>('dashboard');
+  const [page, setPage]         = useState<Page>('dashboard');
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleLogin = (r: Role, name: string) => {
-    setRole(r);
+  // 1. Session Persistence: Check for an existing token on app startup
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      try {
+        // If your token stores user details (JWT payload), you can decode it here using 'jwt-decode'
+        // For now, we will restore the session. (If you have a /api/me endpoint, call it here)
+        setView('app');
+      } catch (error) {
+        console.error("Invalid token session:", error);
+        clearToken();
+      }
+    }
+    setIsLoading(false);
+  }, []);
+
+  // 2. Safe Login Handler with Backend Role Normalization
+  const handleLogin = (incomingRole: string, name: string) => {
+    // Normalizes backend uppercase roles (e.g., 'ADMIN') to frontend lowercase roles ('admin')
+    const cleanRole = incomingRole.toLowerCase() as Role;
+    
+    setRole(cleanRole);
     setFullName(name);
-    // Scanner role lands directly on the scanner page
-    setPage(r === 'scanner' ? 'scanner' : 'dashboard');
+    
+    // Scanner role lands directly on the scanner view, others land on dashboard
+    setPage(cleanRole === 'scanner' ? 'scanner' : 'dashboard');
     setView('app');
   };
 
@@ -59,6 +81,11 @@ export default function App() {
     setView('landing');
     setFullName('');
   };
+
+  // Prevent flash of landing page while checking token status
+  if (isLoading) {
+    return <div className="loading-screen" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontFamily: 'Nunito' }}>Loading EduTrack...</div>;
+  }
 
   if (view === 'landing') {
     return <LandingPage onEnterApp={() => setView('login')} />;
@@ -103,7 +130,7 @@ export default function App() {
         <div className="sidebar-footer">
           <div className="sidebar-user">
             <div className="sidebar-user-avatar">
-              {fullName ? fullName.split(' ').map(n => n[0]).join('').substring(0, 2) : role[0].toUpperCase()}
+              {fullName ? fullName.split(' ').map(n => n[0]).join('').substring(0, 2) : role[0]?.toUpperCase()}
             </div>
             <div className="sidebar-user-info">
               <h4>{fullName || ROLE_LABELS[role]}</h4>
